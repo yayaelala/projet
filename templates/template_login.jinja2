@@ -1,0 +1,173 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="{{ request.LANGUAGE_CODE }}">
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="pyramid web application">
+  <meta name="author" content="Pylons Project">
+  {% block inject_css %}
+  {% endblock inject_css %}
+  <!-- Bootstrap 3.3.7 -->
+  <link rel="stylesheet" href="{% static 'horizon_pricer/static/bootstrap/css/bootstrap.min.css' %}">
+  <!-- Font Awesome -->
+  <link rel="stylesheet" href="{% static 'horizon_pricer/static/fa5/fontawesome.min.css' %}">
+  <!-- Theme style -->
+  <link rel="stylesheet" href="{% static 'horizon_pricer/static/css/AdminLTE.min.css' %}">
+  <!-- AdminLTE Skins. Choose a skin from the css/skins
+       folder instead of downloading all of them to reduce the load. -->
+  <link rel="stylesheet" href="{% static 'horizon_pricer/static/css/skin-blue.min.css' %}">
+  <link rel="stylesheet" href="{% static 'horizon_pricer/static/css/style.css' %}">
+
+
+  <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+
+
+
+  <!-- Google Font -->
+  <link rel="stylesheet"
+        href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,600,700,300italic,400italic,600italic">
+</head>
+<body class="hold-transition skin-blue sidebar-mini">
+<div class="wrapper">
+
+  <header class="main-header">
+
+    <!-- Logo -->
+    <a href="/" class="logo">
+      <!-- mini logo for sidebar mini 50x50 pixels -->
+      <span class="logo-mini"><b>PK</b>M</span>
+      <!-- logo for regular state and mobile devices -->
+      <span class="logo-lg"><b>PK</b>Markets</span>
+    </a>
+
+    <!-- Header Navbar: style can be found in header.less -->
+    <nav class="navbar navbar-static-top">
+      <!-- Sidebar toggle button-->
+      <a href="#" class="sidebar-toggle" data-toggle="push-menu" role="button">
+        <span class="sr-only">Toggle navigation</span>
+      </a>
+      <!-- Navbar Right Menu -->
+
+    </nav>
+  </header>
+
+
+{% block title %} Login {% endblock %}
+
+
+
+  <!-- Content Wrapper. Contains page content -->
+  <div class="content-wrapper">
+    <!-- Content Header (Page header) -->
+    <section class="content-header">
+      <h1>
+        PKM
+        <small>Version 1.0</small>
+      </h1>
+      <ol class="breadcrumb">
+      </ol>
+    </section>
+
+    <!-- Main content -->
+
+    <section class="content">
+      {% block content%}
+       <div class="auth-wrapper">
+           <div class="auth-content">
+               <div>
+                   <span class="r"></span>
+                   <span class="r s"></span>
+                   <span class="r s"></span>
+                   <span class="r"></span>
+               </div>
+               <div class="card">
+                   <div class="card-body text-center">
+                       <div class="mb-4">
+                           <i class="feather icon-unlock auth-icon"></i>
+                       </div>
+                       <h3 class="mb-4">
+                           Login
+                       </h3>
+
+                       <span class="mb-0 text-muted">
+                           Add your credentials
+                       </span>
+
+                       <br />
+                       <br />
+
+                       <form role="form" action="/">
+
+                           <div class="input-group mb-3">
+                               <input class="form-control" placeholder="Username">
+                           </div>
+
+                           <div class="input-group mb-4">
+                               <input type="password" class="form-control" placeholder="password">
+                           </div>
+
+                           <div class="form-group text-left">
+                               <div class="checkbox checkbox-fill d-inline">
+                                   <input type="checkbox" name="checkbox-fill-1" id="checkbox-fill-a1" checked="">
+                                   <label for="checkbox-fill-a1" class="cr"> Save Details</label>
+                               </div>
+                           </div>
+                           <button name="login" class="btn btn-primary shadow-2 mb-4">Login</button>
+
+                       </form>
+
+                       <p class="mb-0 text-muted">Don’t have an account? <a href="view_register" >Signup</a></p>
+                       <br />
+                   </div>
+               </div>
+           </div>
+       </div>
+      {% endblock content %}
+    </section>
+    <!-- /.content -->
+
+  </div>
+  <!-- /.content-wrapper -->
+
+  <footer class="main-footer">
+    <div class="pull-right hidden-xs">
+      <b>Version</b> 1.0
+    </div>
+    <strong><a href="#">Kanyon APP</a>.</strong> All rights
+    reserved. BY KANYON LAB - Yassine
+  </footer>
+
+  <!-- Control Sidebar -->
+  <!-- /.control-sidebar -->
+  <!-- Add the sidebar's background. This div must be placed
+       immediately after the control sidebar -->
+  <div class="control-sidebar-bg"></div>
+
+</div>
+
+<!-- jQuery 3 -->
+ <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+<!-- Bootstrap 3.3.7 -->
+<script src="{% static 'horizon_pricer/static/bootstrap/js/bootstrap.min.js' %}"></script>
+<!-- AdminLTE App -->
+<script src="{% static 'horizon_pricer/static/js/adminlte.min.js' %}"></script>
+
+<!-- Datepicker -->
+<script src="{% static 'horizon_pricer/static/js/datepicker.js' %}"></script>
+
+
+<script src="https://code.jquery.com/jquery-1.12.4.js"></script>
+<script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+
+
+
+
+
+
+{% block inject_js %}
+{% endblock inject_js %}
+</body>
+</html>

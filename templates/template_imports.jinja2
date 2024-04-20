@@ -1,0 +1,79 @@
+
+
+{% extends "master.jinja2" %}
+{% load static %}
+
+<section class="scripts">
+  {% block scripts %}
+  <section>
+    "Bordure"
+  </section>
+  {% endblock scripts %}
+</section>
+
+
+
+{% block content %}
+
+
+{{ rendered_form_import_courbe | safe }}
+
+{{ form | safe }}
+
+<section>
+
+  <style type="text/css">
+  .tg  {
+    border-collapse:collapse;
+    border-spacing:0;
+  }
+  .tg td{
+    border-color:blue;
+    border-style:solid;
+    border-width:1px;
+    font-family:Arial, sans-serif;
+    font-size:12px;
+    overflow:hidden;
+    padding:20px 10px;
+    word-break:normal;
+  }
+  .tg th{
+    border-color:black;
+    border-style:solid;
+    border-width:1px;
+    font-family:Arial, sans-serif;
+    font-size:12px;
+    font-weight:normal;
+    overflow:hidden;
+    padding:10px 5px;
+    word-break:normal;
+  }
+  .tg .tg-0lax{
+    text-align:left;
+    vertical-align:top
+  }
+  </style>
+
+  <table class="tg">
+
+  <thead>
+    <tr>
+       <td class="c1">date marché</td>
+       <td class="c2">Maturité</td>
+       <td class="c3"><SPAN>tenors en jours</SPAN></td>
+       <td class="c4"><SPAN>tenors</SPAN></td>
+    </tr>
+  </thead>
+
+  {% for d in one %}
+  <tr>
+     <td class="c1">{{d.date_marche}}</td>
+     <td class="c2">{{d.tenors_y}}</td>
+     <td class="c3"><SPAN>{{d.tenors_d}}</SPAN></td>
+     <td class="c4"><SPAN>{{d.taux}}</SPAN></td>
+  </tr>
+  {% endfor %}
+  </table>
+</section>
+
+{% endblock %}
