@@ -16,7 +16,7 @@ def my_view(request):
 
         # Pour cet exemple, je vais simplement créer un dictionnaire
         # comme dans votre code original
-        one = {'title': 'Hello Master', 'SudoUser': 'Yahya'}
+        one = {'title': 'Hello Master', 'SudoUser': 'Amine'}
 
     except SQLAlchemyError:
         db_err_msg = """

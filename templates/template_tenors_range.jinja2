@@ -1,78 +1,175 @@
-
 {% extends "master.jinja2" %}
 {% load static %}
 
-<section class="scripts">
-  {% block scripts %}
-  <section>
-    "Bordure"
-  </section>
-  {% endblock scripts %}
-</section>
-
-
-
 {% block content %}
 
-
-{{ rendered_form_tenors_range | safe }}
-
-{{ form | safe }}
+<form method="post">
+  {% csrf_token %}
+  <label for="date_start">Date Initiale :</label>
+  <input type="date" id="date_start" name="date_start">
+  <label for="date_end">Date Finale :</label>
+  <input type="date" id="date_end" name="date_end">
+  <button type="submit">Afficher</button>
+</form>
 
 <section>
-
   <style type="text/css">
-  .tg  {
-    border-collapse:collapse;
-    border-spacing:0;
-  }
-  .tg td{
-    border-color:blue;
-    border-style:solid;
-    border-width:1px;
-    font-family:Arial, sans-serif;
-    font-size:12px;
-    overflow:hidden;
-    padding:20px 10px;
-    word-break:normal;
-  }
-  .tg th{
-    border-color:black;
-    border-style:solid;
-    border-width:1px;
-    font-family:Arial, sans-serif;
-    font-size:12px;
-    font-weight:normal;
-    overflow:hidden;
-    padding:10px 5px;
-    word-break:normal;
-  }
-  .tg .tg-0lax{
-    text-align:left;
-    vertical-align:top
-  }
+    /* Styles CSS pour le tableau */
+    .table-container {
+      width: 100%;
+      overflow-x: auto; /* Activer le défilement horizontal */
+    }
+
+    .tg {
+      border-collapse: collapse;
+      border-spacing: 0;
+      margin-top: 20px;
+      /* Ajoutez une largeur fixe ou en pourcentage pour définir la largeur maximale du tableau */
+      width: 100%; /* Vous pouvez ajuster cette valeur selon vos besoins */
+    }
+
+    .tg th {
+      font-family: Arial, sans-serif;
+      font-size: 14px;
+      font-weight: bold;
+      padding: 10px 20px;
+      border-style: solid;
+      border-width: 1px;
+      overflow: hidden;
+      word-break: normal;
+      border-color: black;
+      background-color: #4CAF50;
+      color: white;
+    }
+
+    .tg td {
+      font-family: Arial, sans-serif;
+      font-size: 14px;
+      padding: 10px 20px;
+      border-style: solid;
+      border-width: 1px;
+      overflow: hidden;
+      word-break: normal;
+      border-color: black;
+      background-color: #f2f2f2;
+    }
+
+    .tg tr:hover {
+      background-color: #ddd; /* Changement de couleur au survol */
+    }
+
+    .tg tr:hover td {
+      background-color: #e6e6e6; /* Nouvelle couleur de fond au survol, légèrement plus foncée */
+    }
+
+    .tg tr:nth-child(even) {
+      background-color: #f2f2f2;
+    }
+
+    .tg caption {
+      font-size: larger;
+      margin-bottom: 10px;
+    }
   </style>
 
-  <table class="tg">
+  <div class="table-container">
+    <table class="tg">
+      <thead>
+        <tr>
+          <th>Date Marché</th>
+          
+          <th>13s</th>
+          <th>26s</th>
+          <th>52s</th>
+          <th>1an</th>
+          <th>2ans</th>
+          <th>3ans</th>
+          <th>4ans</th>
+          <th>5ans</th>
+          <th>6ans</th>
+          <th>7ans</th>
+          <th>8ans</th>
+          <th>9ans</th>
+          <th>10ans</th>
+          <th>11ans</th>
+          <th>12ans</th>
+          <th>13ans</th>
+          <th>14ans</th>
+          <th>15ans</th>
+          <th>16ans</th>
+          <th>17ans</th>
+          <th>18ans</th>
+          <th>19ans</th>
+          <th>20ans</th>
+          <th>21ans</th>
+          <th>22ans</th>
+          <th>23ans</th>
+          <th>24ans</th>
+          <th>25ans</th>
+          <th>26ans</th>
+          <th>27ans</th>
+          <th>28ans</th>
+          <th>29ans</th>
+          <th>30ans</th>
+          
+        </tr>
+      </thead>
+      <tbody>
+        {% if one %}
+          {% for data in one %}
+            <tr>
+              <td>{{ data.0 }}</td> <!-- Date du marché -->
+              <td>{{ data.3 }}</td> <!-- Taux pour la période -->
+              
+            </tr>
+          {% endfor %}
+        {% endif %}
+      </tbody>
+      
+                 
+      
+    </table>
+  </div>
 
-  <thead>
-    <tr>
-       <td class="c1">date marché</td>
-       <td class="c2">Maturité</td>
-       <td class="c3"><SPAN>tenors en jours</SPAN></td>
-       <td class="c4"><SPAN>tenors</SPAN></td>
-    </tr>
-  </thead>
-
-  {% for d in one %}
-  <tr>
-     <td class="c1">{{d.date_marche}}</td>
-     <td class="c2">{{d.tenors_y}}</td>
-     <td class="c3"><SPAN>{{d.tenors_d}}</SPAN></td>
-     <td class="c4"><SPAN>{{d.taux}}</SPAN></td>
-  </tr>
-  {% endfor %}
-  </table>
+  <div id="graph-container" style="width: 80%; margin: 0 auto;">
+    <!-- Placeholder pour le graphique -->
+    <canvas id="myChart"></canvas>
+  </div>
 </section>
+
+<!-- Script pour afficher le graphique -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.7.0/chart.min.js"></script>
+<script>
+  function showTauxByMaturite() {
+    var labels = [];
+    var data = [];
+
+    {% for d in one %}
+      labels.push('{{ d.tenors_d }}');
+      data.push('{{ d.taux }}');
+    {% endfor %}
+
+    var ctx = document.getElementById('myChart').getContext('2d');
+    var myChart = new Chart(ctx, {
+      type: 'line',
+      data: {
+        labels: labels,
+        datasets: [{
+          label: 'Taux par Maturité',
+          data: data,
+          borderColor: 'rgb(75, 192, 192)',
+          tension: 0.1
+        }]
+      },
+      options: {
+        scales: {
+          y: {
+            beginAtZero: true
+          }
+        }
+      }
+    });
+  }
+</script>
 
 {% endblock %}

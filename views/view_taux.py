@@ -1,70 +1,64 @@
 from django.shortcuts import render
-from django.http import HttpResponse
 from sqlalchemy.exc import SQLAlchemyError
 from horizon_pricer.models.data.db.db_tables import *
 from horizon_pricer.models.data.db.db_queries import *
+from horizon_pricer.models.data.db.db_loading import *
 
+from horizon_pricer.models.data.db.helpers.p_factory import *
+
+import datefinder
 from deform import Form, Button
-from colander import MappingSchema, SequenceSchema, SchemaNode, Date
-import deform
+from colander import MappingSchema, SchemaNode, Date
+import deform, colander
+import datetime as dt
 
-class Date_Marche_Input(MappingSchema):
-    date_marche = SchemaNode(Date(),
-                             title="Date Marché")
+dbs = dbsession()
 
-class DatesSchema(SequenceSchema):
+class Date_Marche_Input(colander.MappingSchema):
+    date_marche = colander.SchemaNode(
+                colander.Date(),
+                title="Date Marché",
+            )
+
+class DatesSchema(colander.SequenceSchema):
     date = Date_Marche_Input()
 
-class Dates(MappingSchema):
+class Dates(colander.Schema):
     dates = Date_Marche_Input()
 
-def my_view(request):
+def render_form_taux():
+    class MySchema(colander.MappingSchema):
+        date = colander.SchemaNode(colander.Date())
+
+    schema = MySchema()  
+    form = deform.Form(schema, buttons=('submit',))
+
+    return form.render()  
+
+
+def my_view(request, template_name='template_taux.jinja2'):
     schema = Dates()
-    process_btn = Button(name='submit', title="submit")
+    process_btn = deform.form.Button(name='Submit', title="Submit")
     myform = Form(schema, buttons=(process_btn,))
 
-    db_err_msg = """\
-    Pyramid is having a problem using your SQL database.  The problem
-    might be caused by one of the following things:
+    if request.method == 'POST':
+        context = {}
 
-    1.  You may need to initialize your database tables with `alembic`.
-        Check your README.txt for descriptions and try to run it.
-
-    2.  Your database server may not be running.  Check that the
-        database server referred to by the "sqlalchemy.url" setting in
-        your "development.ini" file is running.
-
-    After you fix the problem, please restart the Pyramid application to
-    try it again.
-    """
-
-    if request.method == "POST":
-        if 'submit' in request.POST:
-            controls = request.POST.items()
-            try:
-                if request.POST.get('date_marche'):
-                    date_m = request.POST.get('date_marche')
-                    one = query_tenors(date_m, request.dbsession)
-                    if not one:
-                        one = 'date inexistante'
-                else:
-                    one = 'Nothing'
-                    print(one)
-
-                rendered_form_taux = myform.render()
-
-                return render(request, 'template_taux.jinja2', {'form': rendered_form_taux, 'one': one})
-
-            except deform.ValidationFailure as e:
-                rendered_form_taux = e.render()
-                return render(request, 'template_taux.jinja2', {'form': rendered_form_taux, 'error_msg': db_err_msg})
-
-            except SQLAlchemyError:
-                return render(request, 'template_taux.jinja2', {'error_msg': db_err_msg})
+        if 'date' in request.POST:
+            date_m = request.POST['date']
+            print(to_date(date_m))
+            one = query_tenors(format(date_m), dbs)
+        else:
+            one = 'Nothing'
+            
 
         rendered_form_taux = myform.render()
-        return render(request, 'template_taux.jinja2', {'form': rendered_form_taux})
+
+        context.update({'form': rendered_form_taux, 'one': one})
+    
+        return render(request, template_name, context)
 
     else:
         rendered_form_taux = myform.render()
-        return render(request, 'template_taux.jinja2', {'form': rendered_form_taux})
+        context = {'rendered_form_taux': rendered_form_taux}
+        return render(request, template_name, context)

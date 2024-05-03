@@ -1,0 +1,199 @@
+{% extends 'master.jinja2' %}
+{% load static %}
+
+{% block content %}
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css"> <!-- Inclure Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.css"> <!-- Inclure jQuery UI -->
+
+    <style>
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        th, td {
+            padding: 10px;
+            text-align: left;
+            border-bottom: 1px solid #ddd;
+            transition: background-color 0.3s ease;
+        }
+
+        th {
+            background-color: #f2f2f2;
+        }
+
+        tr:hover td {
+            background-color: #f5f5f5;
+        }
+
+        h1 {
+            text-align: center;
+        }
+
+        .hidden {
+            display: none;
+        }
+
+        .search-container {
+            position: relative;
+            display: flex;
+            justify-content: space-between;
+            width: 100%;
+        }
+
+        .search-input {
+            width: calc(100% - 40px);
+            max-width: 350px;
+            padding: 8px;
+            margin-bottom: 10px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            transition: border-color 0.3s ease;
+        }
+
+        .search-input:focus {
+            border-color: #007bff;
+            outline: none;
+        }
+
+        .calendar-icon { 
+            position: absolute;
+            right: 10px;
+            top: 40%;
+            transform: translateY(-50%);
+            cursor: pointer;
+        }
+
+        .no-results {
+            font-style: italic;
+            color: #d9534f;
+            text-align: center;
+            margin-top: 10px;
+            display: none;
+        }
+    </style>
+
+    <h1>Données de Mcl</h1>
+
+    <div class="search-container">
+        <input type="text" id="searchInputCode" placeholder="Rechercher par code ISIN..." class="search-input" onkeyup="searchTable('code')">
+        <br>
+        <input type="text" id="searchInputNom" placeholder="Rechercher par nom d'émetteur..." class="search-input" onkeyup="searchTable('nom')">
+        <br>
+        <input type="text" id="searchInputDateEcheance" placeholder="Rechercher par date d'échéance (jj/mm/aaaa)..." class="search-input" onkeyup="searchTable('date_echeance')">
+        <i class="fas fa-calendar-alt calendar-icon" onclick="showDatePicker()"></i>
+    </div>
+
+    <div class="table-responsive">
+        <table id="dataTable">
+            <thead>
+                <tr>
+                    <th>Code ISIN</th>
+                    <th>Nom émetteur</th>
+                    <th>Famille instrument</th>
+                    <th>Capital émis</th>
+                    <th>Quantité émise</th>
+                    <th>Taux facial</th>
+                    <th>Date émission</th>
+                    <th>Date jouissance</th>
+                    <th>Date échéance</th>
+                    <th>Nominal</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for item in data %}
+                <tr>
+                    <td>{{ item.code_isin }}</td>
+                    <td>{{ item.nom_emetteur }}</td>
+                    <td>{{ item.famille_instrument }}</td>
+                    <td>{{ item.capital_emis }}</td>
+                    <td>{{ item.qt_emise }}</td>
+                    <td>{{ item.taux_facial }}</td>
+                    <td>{{ item.date_emission }}</td>
+                    <td>{{ item.date_jouissance }}</td>
+                    <td>{{ item.date_echeance }}</td>
+                    <td>{{ item.nominal }}</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+    
+    <p class="no-results">Aucun titre trouvé</p>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js"></script>
+
+    <script>
+        function searchTable(column) {
+            var input, filter, table, tr, td, i, txtValue;
+            if (column === 'code') {
+                input = document.getElementById("searchInputCode");
+            } else if (column === 'nom') {
+                input = document.getElementById("searchInputNom");
+            } else if (column === 'date_echeance') {
+                input = document.getElementById("searchInputDateEcheance");
+            }
+            filter = input.value.toUpperCase();
+            table = document.getElementById("dataTable");
+            tr = table.getElementsByTagName("tr");
+
+            var found = false;
+            var anyFilter = filter.length > 0;
+
+            for (i = 0; i < tr.length; i++) {
+                if (column === 'code') {
+                    td = tr[i].getElementsByTagName("td")[0];
+                } else if (column === 'nom') {
+                    td = tr[i].getElementsByTagName("td")[1];
+                } else if (column === 'date_echeance') {
+                    td = tr[i].getElementsByTagName("td")[8];
+                }
+                if (td) {
+                    txtValue = td.textContent || td.innerText;
+                    if (column !== 'date_echeance') {
+                        if (txtValue.toUpperCase().indexOf(filter) > -1) {
+                            tr[i].classList.remove("hidden");
+                            found = true;
+                        } else {
+                            tr[i].classList.add("hidden");
+                        }
+                    } else {
+                        if (filter === '') { // Si le filtre est vide, afficher toutes les lignes
+                            tr[i].classList.remove("hidden");
+                            found = true;
+                        } else {
+                            if (txtValue === filter) {
+                                tr[i].classList.remove("hidden");
+                                found = true;
+                            } else {
+                                tr[i].classList.add("hidden");
+                            }
+                        }
+                    }
+                }
+            }
+
+            var noResultsMessage = document.querySelector(".no-results");
+            if (!found && anyFilter) {
+                noResultsMessage.style.display = "block";
+            } else {
+                noResultsMessage.style.display = "none";
+            }
+        }
+
+        function showDatePicker() {
+            $("#searchInputDateEcheance").datepicker({
+                dateFormat: 'dd/mm/yy',
+                changeMonth: true,
+                changeYear: true,
+                onSelect: function(dateText, inst) {
+                    var year = inst.selectedYear;
+                    var month = inst.selectedMonth;
+                    $(this).datepicker('setDate', new Date(year, month, $(this).datepicker('getDate').getDate()));
+                    searchTable('date_echeance');
+                }
+            }).datepicker("show");
+        }
+    </script>
+{% endblock %}

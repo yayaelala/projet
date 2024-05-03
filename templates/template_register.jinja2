@@ -1,352 +1,62 @@
-
-{% extends "master.jinja2" %}
 {% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>User Register</title>
+    <link rel="stylesheet" href="{% static 'assets/css/style.css' %}"> <!-- Ajoutez votre propre fichier CSS pour le style -->
+</head>
+<body>
 
 <section class="scripts">
   {% block scripts %}
-
-
-  <link rel="stylesheet" href="{% static 'horizon_pricer/static/assets/plugins/chart-morris/css/morris.css' %}">
-
+    <link rel="stylesheet" href="{% static 'assets/plugins/chart-morris/css/morris.css' %}">
   {% endblock scripts %}
-
 </section>
-
-
-{% block title %} User Register {% endblock %}
 
 {% block content %}
 
-<h1>User Register</h1>
-<div class="auth-wrapper">
-    <div class="auth-content">
-        <div class="card">
-            <div class="card-body text-center">
-                <div class="mb-4">
-                    <i class="feather icon-user-plus auth-icon"></i>
-                </div>
-                <h3 class="mb-4">
-                    Register
-                </h3>
-
-                <span class="mb-0 text-muted">
-                    Add your credentials
-                </span>
-
-                <br />
-                <br />
-
-                <!-- Hide the form on success -->
-                <form role="form" action="/">
-
-                    <div class="input-group mb-3">
-                        <input class="form-control" placeholder="Username">
+<div class="container">
+    <div class="register-container">
+        <div class="register-content">
+            <div class="register-card">
+                <div class="card-body">
+                    <div class="register-icon">
+                        <i class="feather icon-user-plus"></i>
                     </div>
+                    <h2 class="register-title">Register</h2>
+                    <p class="register-subtitle">Add your credentials</p>
 
-                    <div class="input-group mb-3">
-                        <input type="email" class="form-control" placeholder="Email">
-                    </div>
-
-                    <div class="input-group mb-4">
-                        <input type="password" class="form-control" placeholder="password">
-                    </div>
-
-                    <div class="form-group text-left">
-                        <div class="checkbox checkbox-fill d-inline">
-                            <input type="checkbox" name="checkbox-fill-1" id="checkbox-fill-a1" checked="">
-                            <label for="checkbox-fill-a1" class="cr"> Agree with <a href="#">terms</a></label>
+                    <!-- Hide the form on success -->
+                    <form role="form" action="/">
+                        <div class="form-group">
+                            <input class="form-control" type="text" placeholder="Username">
                         </div>
-                    </div>
-                    <button name="register" class="btn btn-primary shadow-2 mb-4">Register</button>
+                        <div class="form-group">
+                            <input class="form-control" type="email" placeholder="Email">
+                        </div>
+                        <div class="form-group">
+                            <input class="form-control" type="password" placeholder="Password">
+                        </div>
+                        <div class="form-group text-left">
+                            <div class="checkbox">
+                                <input type="checkbox" id="agree-terms">
+                                <label for="agree-terms">Agree with <a href="#">terms</a></label>
+                            </div>
+                        </div>
+                        <button class="btn btn-primary btn-block" type="submit">Register</button>
+                    </form>
 
-                </form>
-
-                <p class="mb-0 text-muted">Already have an account? <a href="/login.html" >Login</a></p>
-                <br />
-
-                <p class="mb-2 text-muted">
-                    &copy; <a target="_blank" href="https://bit.ly/37fF9RT">CodedThemes</a>
-                    - coded by <a target="_blank" href="https://appseed.us">AppSeed</a>.
-                </p>
+                    <p class="register-login-link">Already have an account? <a href= "{% url 'view_login' %}">Login</a></p>
+                </div>
             </div>
         </div>
     </div>
 </div>
-
-
-<div class="pcoded-content">
-    <div class="pcoded-inner-content">
-        <!-- [ breadcrumb ] start -->
-        <div class="page-header">
-            <div class="page-block">
-                <div class="row align-items-center">
-                    <div class="col-md-12">
-                        <div class="page-header-title">
-                            <h5 class="m-b-10">Bootstrap Basic Tables</h5>
-                        </div>
-                        <ul class="breadcrumb">
-                            <li class="breadcrumb-item"><a href="index.html"><i class="feather icon-home"></i></a></li>
-                            <li class="breadcrumb-item"><a href="#!">Tables</a></li>
-                            <li class="breadcrumb-item"><a href="javascript:">Basic Tables</a></li>
-                        </ul>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <!-- [ breadcrumb ] end -->
-        <div class="main-body">
-            <div class="page-wrapper">
-                <!-- [ Main Content ] start -->
-                <div class="row">
-                    <!-- [ basic-table ] start -->
-                    <div class="col-xl-12">
-                        <div class="card">
-                            <div class="card-header">
-                                <h5>Basic Table</h5>
-                                <span class="d-block m-t-5">use class <code>table</code> inside table element</span>
-                            </div>
-                            <div class="card-block table-border-style">
-                                <div class="table-responsive">
-                                    <table class="table">
-                                        <thead>
-                                            <tr>
-                                                <th>#</th>
-                                                <th>First Name</th>
-                                                <th>Last Name</th>
-                                                <th>Username</th>
-                                            </tr>
-                                        </thead>
-                                        <tbody>
-                                            <tr>
-                                                <th scope="row">1</th>
-                                                <td>Mark</td>
-                                                <td>Otto</td>
-                                                <td>@mdo</td>
-                                            </tr>
-                                            <tr>
-                                                <th scope="row">2</th>
-                                                <td>Jacob</td>
-                                                <td>Thornton</td>
-                                                <td>@fat</td>
-                                            </tr>
-                                            <tr>
-                                                <th scope="row">3</th>
-                                                <td>Larry</td>
-                                                <td>the Bird</td>
-                                                <td>@twitter</td>
-                                            </tr>
-                                        </tbody>
-                                    </table>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <!-- [ basic-table ] end -->
-
-                    <!-- [ Hover-table ] start -->
-                    <div class="col-xl-12">
-                        <div class="card">
-                            <div class="card-header">
-                                <h5>Hover Table</h5>
-                                <span class="d-block m-t-5">use class <code>table-hover</code> inside table element</span>
-                            </div>
-                            <div class="card-block table-border-style">
-                                <div class="table-responsive">
-                                    <table class="table table-hover">
-                                        <thead>
-                                            <tr>
-                                                <th>#</th>
-                                                <th>First Name</th>
-                                                <th>Last Name</th>
-                                                <th>Username</th>
-                                            </tr>
-                                        </thead>
-                                        <tbody>
-                                            <tr>
-                                                <th scope="row">1</th>
-                                                <td>Mark</td>
-                                                <td>Otto</td>
-                                                <td>@mdo</td>
-                                            </tr>
-                                            <tr>
-                                                <th scope="row">2</th>
-                                                <td>Jacob</td>
-                                                <td>Thornton</td>
-                                                <td>@fat</td>
-                                            </tr>
-                                            <tr>
-                                                <th scope="row">3</th>
-                                                <td>Larry</td>
-                                                <td>the Bird</td>
-                                                <td>@twitter</td>
-                                            </tr>
-                                        </tbody>
-                                    </table>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <!-- [ Hover-table ] end -->
-
-                    <!-- [ stiped-table ] start -->
-                    <div class="col-xl-12">
-                        <div class="card">
-                            <div class="card-header">
-                                <h5>Striped Table</h5>
-                                <span class="d-block m-t-5">use class <code>table-striped</code> inside table element</span>
-                            </div>
-                            <div class="card-block table-border-style">
-                                <div class="table-responsive">
-                                    <table class="table table-striped">
-                                        <thead>
-                                            <tr>
-                                                <th>#</th>
-                                                <th>First Name</th>
-                                                <th>Last Name</th>
-                                                <th>Username</th>
-                                            </tr>
-                                        </thead>
-                                        <tbody>
-                                            <tr>
-                                                <th scope="row">1</th>
-                                                <td>Mark</td>
-                                                <td>Otto</td>
-                                                <td>@mdo</td>
-                                            </tr>
-                                            <tr>
-                                                <th scope="row">2</th>
-                                                <td>Jacob</td>
-                                                <td>Thornton</td>
-                                                <td>@fat</td>
-                                            </tr>
-                                            <tr>
-                                                <th scope="row">3</th>
-                                                <td>Larry</td>
-                                                <td>the Bird</td>
-                                                <td>@twitter</td>
-                                            </tr>
-                                        </tbody>
-                                    </table>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <!-- [ stiped-table ] end -->
-                </div>
-                <!-- [ Main Content ] end -->
-            </div>
-        </div>
-    </div>
-</div>
-
-
-<div class="pcoded-content">
-    <div class="pcoded-inner-content">
-        <!-- [ breadcrumb ] start -->
-        <div class="page-header">
-            <div class="page-block">
-                <div class="row align-items-center">
-                    <div class="col-md-12">
-                        <div class="page-header-title">
-                            <h5 class="m-b-10">Morris Chart</h5>
-                        </div>
-                        <ul class="breadcrumb">
-                            <li class="breadcrumb-item"><a href="/"><i class="feather icon-home"></i></a></li>
-                            <li class="breadcrumb-item"><a href="javascript:">Chart</a></li>
-                            <li class="breadcrumb-item"><a href="javascript:">Morris Chart</a></li>
-                        </ul>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <!-- [ breadcrumb ] end -->
-        <div class="main-body">
-            <div class="page-wrapper">
-                <!-- [ Main Content ] start -->
-                <div class="row">
-                    <!-- [ Morris Chart ] start -->
-                    <div class="col-xl-6">
-                        <div class="card">
-                            <div class="card-header">
-                                <h5>Bar [ Simple ] Chart</h5>
-                            </div>
-                            <div class="card-block">
-                                <div id="morris-bar-chart" style="height:300px"></div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-xl-6">
-                        <div class="card">
-                            <div class="card-header">
-                                <h5>Bar [ Stacked ] Chart</h5>
-                            </div>
-                            <div class="card-block">
-                                <div id="morris-bar-stacked-chart" style="height:300px"></div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-xl-6">
-                        <div class="card">
-                            <div class="card-header">
-                                <h5>Line [ Angle ] Chart</h5>
-                            </div>
-                            <div class="card-block">
-                                <div id="morris-area-chart" style="height:300px"></div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-xl-6">
-                        <div class="card">
-                            <div class="card-header">
-                                <h5>Area [ Smooth ] Chart</h5>
-                            </div>
-                            <div class="card-block">
-                                <div id="morris-area-curved-chart" style="height:300px"></div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-xl-6">
-                        <div class="card">
-                            <div class="card-header">
-                                <h5>Line [ Angle ] Chart</h5>
-                            </div>
-                            <div class="card-block">
-                                <div id="morris-line-chart" class="ChartShadow" style="height:300px"></div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-xl-6">
-                        <div class="card">
-                            <div class="card-header">
-                                <h5>Line [ Smooth ] Chart</h5>
-                            </div>
-                            <div class="card-block">
-                                <div id="morris-line-smooth-chart" class="ChartShadow" style="height:300px"></div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-xl-6">
-                        <div class="card">
-                            <div class="card-header">
-                                <h5>Donut Chart</h5>
-                            </div>
-                            <div class="card-block">
-                                <div id="morris-donut-chart" style="height:300px"></div>
-                            </div>
-                        </div>
-                    </div>
-                    <!-- [ Morris Chart ] end -->
-                </div>
-                <!-- [ Main Content ] end -->
-            </div>
-        </div>
-    </div>
-</div>
-
 
 {% endblock %}
 
-
-<script src="{% static 'horizon_pricer/static/assets/plugins/chart-morris/js/morris.min.js' %}"></script>
-<script src="{% static 'horizon_pricer/static/assets/plugins/chart-morris/js/raphael.min.js' %}"></script>
-<script src="{% static 'horizon_pricer/static/assets/js/pages/chart-morris-custom.js' %}"></script>
+</body>
+</html>

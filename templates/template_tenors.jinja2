@@ -1,0 +1,120 @@
+{% extends "master.jinja2" %}
+{% load static %}
+
+{% block content %}
+
+<form method="post">
+  {% csrf_token %}
+  <label for="date">Date Marché :</label>
+  <input type="date" id="date" name="date">
+  <button type="submit">Afficher</button>
+</form>
+
+<section>
+  <style type="text/css">
+    .tg {
+      border-collapse: collapse;
+      border-spacing: 0;
+      width: 100%;
+    }
+
+    .tg td, .tg th {
+      border: 1px solid #ddd;
+      padding: 8px;
+      text-align: left;
+    }
+
+    .tg tr:nth-child(even) {
+      background-color: #f2f2f2;
+    }
+
+    .tg tr:hover {
+      background-color: #ddd; /* Changement de couleur au survol */
+    }
+
+    .tg tr:hover td {
+      background-color: #cccccc; /* Nouvelle couleur de fond au survol, plus foncée */
+    }
+
+    .tg th {
+      padding-top: 12px;
+      padding-bottom: 12px;
+      background-color: #4CAF50;
+      color: white;
+    }
+
+    .center-button {
+      text-align: center;
+      margin-top: 20px;
+    }
+
+    #graph-container {
+      margin-top: 40px;
+    }
+  </style>
+
+  <table class="tg">
+    <thead>
+      <tr>
+        <th>Date Marché</th>
+        <th>Maturité</th>
+        <th>Tenors en jours</th>
+        <th>Taux</th>
+      </tr>
+    </thead>
+    
+    {% for d in one %}
+    <tr>
+      <td>{{ d.date_marche }}</td>
+      <td>{{ d.tenors_y }}</td>
+      <td>{{ d.tenors_d }}</td>
+      <td>{{ d.taux|floatformat:3 }}%</td>
+    </tr>
+    {% endfor %}
+  </table>
+
+  <div class="center-button">
+    <button onclick="showTauxByMaturite()">Afficher la Courbe</button>
+  </div>
+
+  <div id="graph-container" style="width: 80%; margin: 0 auto;">
+    <!-- Placeholder for the graph -->
+    <canvas id="myChart"></canvas>
+  </div>
+</section>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.7.0/chart.min.js"></script>
+<script>
+  function showTauxByMaturite() {
+    var labels = [];
+    var data = [];
+
+    {% for d in one %}
+      labels.push('{{ d.tenors_y }}');
+      data.push('{{ d.taux }}');
+    {% endfor %}
+
+    var ctx = document.getElementById('myChart').getContext('2d');
+    var myChart = new Chart(ctx, {
+      type: 'line',
+      data: {
+        labels: labels,
+        datasets: [{
+          label: 'Taux par Maturité',
+          data: data,
+          borderColor: 'rgb(75, 192, 192)',
+          tension: 0.1
+        }]
+      },
+      options: {
+        scales: {
+          y: {
+            beginAtZero: true
+          }
+        }
+      }
+    });
+  }
+</script>
+
+{% endblock %}

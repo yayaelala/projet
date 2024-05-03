@@ -1,0 +1,55 @@
+{% extends "master.jinja2" %}
+{% load static %}
+
+{% block content %}
+<div class="container">
+  <h2 class="text-center mt-5 mb-4">Informations sur une Obligation</h2>
+
+  <form method="post" class="text-center mb-4">
+    {% csrf_token %}
+    <div class="form-group">
+      <label for="isin" class="font-weight-bold">ISIN de l'obligation :</label>
+      <input type="text" id="isin" name="isin" class="form-control" required>
+    </div>
+    <button type="submit" class="btn btn-primary">Afficher les caractéristiques</button>
+  </form>
+
+  {% if obligation %}
+  <div class="card">
+    <div class="card-body">
+      <h3 class="card-title">Caractéristiques de l'obligation :</h3>
+      <ul class="list-group">
+        <li class="list-group-item"><span class="font-weight-bold">Code ISIN :</span> {{ obligation.code_isin }}</li>
+        <li class="list-group-item"><span class="font-weight-bold">Nom émetteur :</span> {{ obligation.nom_emetteur }}</li>
+        <li class="list-group-item"><span class="font-weight-bold">Famille instrument :</span> {{ obligation.famille_instrument }}</li>
+        <li class="list-group-item"><span class="font-weight-bold">Capital émis :</span> {{ obligation.capital_emis }}</li>
+        <li class="list-group-item"><span class="font-weight-bold">Quantité émise :</span> {{ obligation.qt_emise }}</li>
+        <li class="list-group-item"><span class="font-weight-bold">Taux facial :</span> {{ obligation.taux_facial }}</li>
+        <li class="list-group-item"><span class="font-weight-bold">Date émission :</span> {{ obligation.date_emission }}</li>
+        <li class="list-group-item"><span class="font-weight-bold">Date jouissance :</span> {{ obligation.date_jouissance }}</li>
+        <li class="list-group-item"><span class="font-weight-bold">Date échéance :</span> {{ obligation.date_echeance }}</li>
+        <li class="list-group-item"><span class="font-weight-bold">Nominal :</span> {{ obligation.nominal }}</li>
+      </ul>
+    </div>
+  </div>
+  
+  <form method="post" class="text-center mt-4">
+    {% csrf_token %}
+    <div class="form-group">
+      <label for="taux_courbe" class="font-weight-bold">Taux de courbe :</label>
+      <input type="text" id="taux_courbe" name="taux_courbe" class="form-control" required>
+    </div>
+    <div class="form-group">
+      <label for="date_valeur" class="font-weight-bold">Date de valeur :</label>
+      <input type="date" id="date_valeur" name="date_valeur" class="form-control" required>
+    </div>
+    <button type="submit" class="btn btn-primary">Pricer</button>
+  </form>
+  
+  {% endif %}
+
+  {% if erreur %}
+  <p class="text-danger text-center mt-4">{{ erreur }}</p>
+  {% endif %}
+</div>
+{% endblock %}
